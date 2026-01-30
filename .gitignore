@@ -4,12 +4,6 @@
 # Log files
 *.log
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
 # Package Files
 *.jar
 *.war
@@ -18,9 +12,6 @@
 *.zip
 *.tar.gz
 *.rar
-
-# Virtual machine crash logs
-hs_err_pid*
 
 # Maven
 target/
@@ -59,16 +50,11 @@ data/
 *.mv.db
 *.trace.db
 
-# Test files
-test-*.html
-
-# Tools and dependencies
+# Build tools and scripts
 tools/
 *.bat
 *.ps1
 *.cmd
 
-# Deployment guides (optional - you might want to keep these)
-# DEPLOYMENT-GUIDE.md
-# SIMPLE-DEPLOYMENT.md
-# CLOUD-DEPLOYMENT.md
+# Test files
+test-*.html
