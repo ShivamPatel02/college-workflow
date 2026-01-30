@@ -1,0 +1,11 @@
+[providers]
+java = "17"
+
+[phases.build]
+cmds = ["chmod +x ./mvnw", "./mvnw clean package -DskipTests"]
+
+[phases.start]
+cmd = "java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/workflow-0.0.1.jar"
+
+[variables]
+MAVEN_OPTS = "-Xmx1024m"
