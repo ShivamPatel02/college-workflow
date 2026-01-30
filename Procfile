@@ -1,1 +1,0 @@
-web: java -jar target/workflow-0.0.1.jar
