@@ -1,0 +1,8 @@
+[phases.build]
+cmds = ["./mvnw clean package -DskipTests -Dmaven.javadoc.skip=true"]
+
+[phases.start]
+cmd = "java -Dserver.port=$PORT -Dspring.profiles.active=prod -jar target/workflow-0.0.1.jar"
+
+[variables]
+MAVEN_OPTS = "-Xmx1024m"
