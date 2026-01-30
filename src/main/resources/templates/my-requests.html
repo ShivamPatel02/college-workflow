@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Requests - College Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --background-color: #0f0f23;
+            --surface-color: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #f1f5f9;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-20px) translateY(-10px); }
+            50% { transform: translateX(20px) translateY(10px); }
+            75% { transform: translateX(-10px) translateY(20px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: bounceIn 1s ease-out 0.2s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+            font-weight: 800 !important;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.6);
+            border-color: #ffffff !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--success-color) 0%, #38a169 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #38a169 0%, var(--success-color) 100%);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .requests-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .requests-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .requests-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .request-card {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .request-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .request-card:hover::before {
+            left: 100%;
+        }
+
+        .request-card:last-child {
+            border-bottom: none;
+        }
+
+        .request-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .request-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .request-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .request-id {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            animation: pulse 2s infinite;
+        }
+
+        .status-pending { 
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); 
+            color: #92400e; 
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        .status-approved { 
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%); 
+            color: #064e3b; 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .status-rejected { 
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%); 
+            color: #7f1d1d; 
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+        .status-in_progress { 
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); 
+            color: #1e3a8a; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .request-details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 1px solid rgba(102, 126, 234, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 3rem 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.3);
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .alert-success {
+            background: rgba(72, 187, 120, 0.2);
+            color: #68d391;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fc8181;
+        }
+
+        .request-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s ease;
+        }
+
+        .meta-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .meta-item i {
+            color: var(--primary-color);
+            width: 16px;
+            animation: pulse 2s infinite;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .request-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .request-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 0.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <div class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-list-alt"></i> 📋 My Requests</h1>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="/new" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> ✨ New Request
+                </a>
+                <a href="/" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> 🏠 Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h2 class="page-title">📊 Request History</h2>
+            <p class="page-subtitle">✨ Track the status and progress of all your submitted requests</p>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div th:if="${param.success}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span>✅ Request submitted successfully!</span>
+        </div>
+        
+        <div th:if="${param.error}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>❌ Request not found or access denied.</span>
+        </div>
+
+        <div class="requests-container">
+            <div class="requests-header">
+                <h2><i class="fas fa-folder-open"></i> 📁 All Requests</h2>
+            </div>
+
+            <div th:if="${#lists.isEmpty(requests)}" class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>📭 No Requests Yet</h3>
+                <p>You haven't submitted any requests. Click "New Request" to get started.</p>
+                <a href="/new" class="btn btn-primary" style="margin-top: 1rem;">
+                    <i class="fas fa-plus"></i> ✨ Submit Your First Request
+                </a>
+            </div>
+
+            <div th:each="request : ${requests}" class="request-card">
+                <div class="request-header">
+                    <div>
+                        <div class="request-title" th:text="${request.type ?: 'Request'}">Request Type</div>
+                        <div class="request-id">ID: #<span th:text="${request.id}">1</span></div>
+                    </div>
+                    <span th:class="${'status-badge status-' + #strings.toLowerCase(request.status ?: 'pending')}" 
+                          th:text="${request.status ?: 'PENDING'}">
+                        Status
+                    </span>
+                </div>
+
+                <div class="request-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-building"></i>
+                        <span>🏢 Department: <span th:text="${request.department ?: 'N/A'}">Department</span></span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-flag"></i>
+                        <span>🚩 Priority: <span th:text="${request.priority ?: 'MEDIUM'}">Priority</span></span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>📅 Submitted: <span th:text="${request.createdAt != null ? #temporals.format(request.createdAt, 'MMM dd, yyyy') : 'N/A'}">Date</span></span>
+                    </div>
+                    <div class="meta-item" th:if="${request.currentApprover}">
+                        <i class="fas fa-user-check"></i>
+                        <span>👤 Current Approver: <span th:text="${request.currentApprover}">Approver</span></span>
+                    </div>
+                </div>
+
+                <div class="request-details" th:if="${request.details}">
+                    <strong>📝 Details:</strong> <span th:text="${request.details}">Request details</span>
+                </div>
+
+                <div class="request-actions">
+                    <a th:href="@{/request/{id}(id=${request.id})}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-eye"></i> 👁️ View Details
+                    </a>
+                    <span th:if="${request.status == 'PENDING' or request.status == 'IN_PROGRESS'}" 
+                          class="meta-item" style="margin-left: auto;">
+                        <i class="fas fa-clock"></i>
+                        <span>⏳ Awaiting approval...</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

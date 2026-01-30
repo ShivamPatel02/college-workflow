@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workflow Management - New Request</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        textarea { height: 100px; resize: vertical; }
+        button { background: #28a745; color: white; padding: 12px 30px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; width: 100%; }
+        button:hover { background: #218838; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #007bff; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .success-message { background: #d4edda; color: #155724; padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← Back to Dashboard</a>
+        
+        <h1>📝 Create New Request</h1>
+        
+        <form action="/save" method="post" th:object="${r}">
+            <div class="form-group">
+                <label for="type">Request Type: *</label>
+                <select name="type" id="type" required>
+                    <option value="">Select request type...</option>
+                    <option value="Leave Request">Leave Request</option>
+                    <option value="Purchase Order">Purchase Order</option>
+                    <option value="Budget Approval">Budget Approval</option>
+                    <option value="Project Approval">Project Approval</option>
+                    <option value="Equipment Request">Equipment Request</option>
+                    <option value="Training Request">Training Request</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="details">Request Details: *</label>
+                <textarea name="details" id="details" placeholder="Please provide detailed information about your request..." required></textarea>
+            </div>
+            
+            <button type="submit">🚀 Submit Request</button>
+        </form>
+        
+        <div style="margin-top: 20px; text-align: center; color: #666; font-size: 14px;">
+            <p>After submitting, you can track your request status in "My Requests"</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Details - College Workflow</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-dark: #3730a3;
+            --secondary-color: #7c3aed;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --background-color: #0f0f23;
+            --surface-color: rgba(255, 255, 255, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: #f1f5f9;
+            --border-color: rgba(255, 255, 255, 0.2);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.2), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.2), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            z-index: -1;
+            animation: backgroundShift 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-20px) translateY(-10px); }
+            50% { transform: translateX(20px) translateY(10px); }
+            75% { transform: translateX(-10px) translateY(20px); }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h1 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: bounceIn 1s ease-out 0.2s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+            font-weight: 800 !important;
+            padding: 0.75rem 1.5rem !important;
+            border-radius: var(--radius-md);
+            font-size: 0.95rem !important;
+            text-decoration: none !important;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.6);
+            border-color: #ffffff !important;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(5, 150, 105, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.5);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .request-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .request-id {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .info-section:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .info-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .status-badge {
+            padding: 0.375rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            animation: pulse 2s infinite;
+        }
+
+        .status-pending { 
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); 
+            color: #92400e; 
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        .status-approved { 
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%); 
+            color: #064e3b; 
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .status-rejected { 
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%); 
+            color: #7f1d1d; 
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+        .status-in_progress { 
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); 
+            color: #1e3a8a; 
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .priority-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .priority-low { 
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%); 
+            color: #064e3b; 
+        }
+        .priority-medium { 
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); 
+            color: #92400e; 
+        }
+        .priority-high { 
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%); 
+            color: #7f1d1d; 
+        }
+        .priority-urgent { 
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
+            color: white; 
+        }
+
+        .details-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            margin: 1.5rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .details-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .details-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .approval-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(20px);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .approval-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .approval-forms {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .approval-form {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 2px solid transparent;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .approval-form:hover {
+            transform: translateY(-2px);
+        }
+
+        .approval-form.approve {
+            border-color: var(--success-color);
+        }
+
+        .approval-form.reject {
+            border-color: var(--danger-color);
+        }
+
+        .form-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-title.approve { color: var(--success-color); }
+        .form-title.reject { color: var(--danger-color); }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .timeline-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .timeline-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timeline {
+            padding: 1.5rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-created { 
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+        }
+        .timeline-approved { 
+            background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+        }
+        .timeline-rejected { 
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        }
+        .timeline-forwarded { 
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .timeline-action {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-user {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-comments {
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-time {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .empty-timeline {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 2rem;
+        }
+
+        .info-notice {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .notice-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .approval-forms {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Floating Particles -->
+    <div class="particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 0.5s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 1.5s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+    </div>
+
+    <div class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-file-alt"></i> 📄 Request Details</h1>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="javascript:history.back()" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> ← Back
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="request-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <span th:text="${request.type ?: 'Request'}">Request Type</span>
+                    <span class="request-id">#<span th:text="${request.getId()}">1</span></span>
+                </div>
+            </div>
+            
+            <div class="card-content">
+                <div class="info-grid">
+                    <div class="info-section">
+                        <div class="info-title">
+                            <i class="fas fa-info-circle"></i>
+                            📋 Request Information
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Type</span>
+                            <span class="info-value" th:text="${request.type ?: 'N/A'}">Type</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Department</span>
+                            <span class="info-value" th:text="${request.department ?: 'N/A'}">Department</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Priority</span>
+                            <span th:class="${'priority-badge priority-' + #strings.toLowerCase(request.priority ?: 'medium')}" 
+                                  th:text="${request.priority ?: 'MEDIUM'}">Priority</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status</span>
+                            <span th:class="${'status-badge status-' + #strings.toLowerCase(request.status ?: 'pending')}" 
+                                  th:text="${request.status ?: 'PENDING'}">Status</span>
+                        </div>
+                    </div>
+                    
+                    <div class="info-section">
+                        <div class="info-title">
+                            <i class="fas fa-route"></i>
+                            🔄 Workflow Information
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Submitted By</span>
+                            <span class="info-value" th:text="${request.byUser ?: 'Unknown'}">User</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Current Approver</span>
+                            <span class="info-value" th:text="${request.currentApprover ?: 'Completed'}">Approver</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Approval Level</span>
+                            <span class="info-value" th:text="${request.approvalLevel ?: 'N/A'}">Level</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Created</span>
+                            <span class="info-value" th:text="${request.createdAt != null ? #temporals.format(request.createdAt, 'MMM dd, yyyy HH:mm') : 'N/A'}">Date</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="details-section">
+                    <div class="details-title">
+                        <i class="fas fa-align-left"></i>
+                        📝 Request Details
+                    </div>
+                    <div class="details-content" th:text="${request.details ?: 'No details provided'}">
+                        Request details will appear here...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Approval Section (only if user can approve) -->
+        <div th:if="${canApprove}" class="approval-section">
+            <div class="approval-title">
+                <i class="fas fa-gavel"></i>
+                ⚖️ Approval Action Required
+            </div>
+            <p><strong>✅ You are authorized to approve or reject this request.</strong></p>
+            <p>Current approval level: <span th:text="${request.approvalLevel}">Level</span></p>
+            
+            <div class="approval-forms">
+                <form th:action="@{/approve/{id}(id=${request.getId()})}" method="post" class="approval-form approve">
+                    <div class="form-title approve">
+                        <i class="fas fa-check-circle"></i>
+                        ✅ Approve Request
+                    </div>
+                    <textarea name="comments" placeholder="Add your approval comments (optional)..." class="form-textarea"></textarea>
+                    <button type="submit" class="btn btn-success" style="width: 100%;">
+                        <i class="fas fa-check"></i> ✅ Approve Request
+                    </button>
+                </form>
+                
+                <form th:action="@{/reject/{id}(id=${request.getId()})}" method="post" class="approval-form reject">
+                    <div class="form-title reject">
+                        <i class="fas fa-times-circle"></i>
+                        ❌ Reject Request
+                    </div>
+                    <textarea name="comments" placeholder="Please provide reason for rejection (required)..." required class="form-textarea"></textarea>
+                    <button type="submit" class="btn btn-danger" style="width: 100%;">
+                        <i class="fas fa-times"></i> ❌ Reject Request
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Info for non-approvers -->
+        <div th:if="${!canApprove and (request.status == 'PENDING' or request.status == 'IN_PROGRESS')}" class="info-notice">
+            <div class="notice-title">
+                <i class="fas fa-info-circle"></i>
+                📊 Request Status
+            </div>
+            <p th:if="${request.currentApprover}">
+                <strong>⏳ Waiting for approval from:</strong> <span th:text="${request.currentApprover}">Approver</span>
+            </p>
+            <p th:if="${request.approvalLevel}">
+                <strong>📈 Current approval level:</strong> <span th:text="${request.approvalLevel}">Level</span>
+            </p>
+            <p><em>✨ You will be notified when there are updates to your request.</em></p>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline-section">
+            <div class="timeline-header">
+                <div class="timeline-title">
+                    <i class="fas fa-history"></i>
+                    📈 Request Timeline
+                </div>
+            </div>
+            
+            <div class="timeline">
+                <div th:if="${#lists.isEmpty(logs)}" class="empty-timeline">
+                    <i class="fas fa-clock" style="font-size: 2rem; color: rgba(255, 255, 255, 0.3); margin-bottom: 1rem;"></i>
+                    <p>⏳ No timeline events yet.</p>
+                </div>
+                
+                <div th:each="log : ${logs}" class="timeline-item">
+                    <div th:class="${'timeline-icon timeline-' + #strings.toLowerCase(log.action ?: 'created')}">
+                        <i th:switch="${log.action}">
+                            <i th:case="'CREATED'" class="fas fa-plus"></i>
+                            <i th:case="'APPROVED'" class="fas fa-check"></i>
+                            <i th:case="'REJECTED'" class="fas fa-times"></i>
+                            <i th:case="'FORWARDED'" class="fas fa-arrow-right"></i>
+                            <i th:case="*" class="fas fa-file"></i>
+                        </i>
+                    </div>
+                    <div class="timeline-content">
+                        <div class="timeline-action" th:text="${log.action ?: 'Unknown Action'}">Action</div>
+                        <div class="timeline-user"><strong>By:</strong> <span th:text="${log.user ?: 'Unknown'}">User</span></div>
+                        <div th:if="${log.comments}" class="timeline-comments" th:text="${log.comments}">Comments</div>
+                        <div th:if="${log.fromRole != null and log.toRole != null}" class="timeline-comments">
+                            <strong>Forwarded:</strong> <span th:text="${log.fromRole}">From</span> → <span th:text="${log.toRole}">To</span>
+                        </div>
+                        <div class="timeline-time" th:text="${log.time != null ? #temporals.format(log.time, 'MMM dd, yyyy HH:mm') : 'N/A'}">Time</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

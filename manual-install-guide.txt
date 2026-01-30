@@ -1,0 +1,55 @@
+MANUAL INSTALLATION GUIDE
+=========================
+
+If the automated script doesn't work, follow these manual steps:
+
+1. CHOCOLATEY (Package Manager)
+   - Open PowerShell as Administrator
+   - Run: Set-ExecutionPolicy Bypass -Scope Process -Force
+   - Run: iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+   - Or visit: https://chocolatey.org/install
+
+2. JAVA 17
+   - Download from: https://adoptium.net/temurin/releases/
+   - Choose: OpenJDK 17 LTS for Windows x64
+   - Install and add to PATH
+
+3. MAVEN
+   - Download from: https://maven.apache.org/download.cgi
+   - Extract to C:\Program Files\Apache\maven
+   - Add C:\Program Files\Apache\maven\bin to PATH
+
+4. MYSQL
+   - Download from: https://dev.mysql.com/downloads/mysql/
+   - Install MySQL Community Server
+   - Set root password to: 1234
+   - Create database: CREATE DATABASE workflow_db;
+
+5. DOCKER DESKTOP (Alternative to Java+Maven+MySQL)
+   - Download from: https://www.docker.com/products/docker-desktop/
+   - Install and restart computer
+   - This replaces the need for Java, Maven, and MySQL
+
+ENVIRONMENT VARIABLES:
+======================
+Add these to your System PATH:
+- C:\Program Files\Eclipse Adoptium\jdk-17.x.x.x-hotspot\bin
+- C:\Program Files\Apache\maven\bin
+- C:\Program Files\MySQL\MySQL Server 8.0\bin
+
+VERIFICATION:
+=============
+Open new Command Prompt and test:
+- java -version
+- mvn -version  
+- mysql --version
+- docker --version
+
+RUNNING THE APPLICATION:
+========================
+After installation:
+1. Run: execute-when-ready.bat
+2. Or manually: cd src && mvn spring-boot:run
+3. Or with Docker: docker-compose up --build
+
+Application will be available at: http://localhost:8080
