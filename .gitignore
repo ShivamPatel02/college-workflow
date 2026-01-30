@@ -37,11 +37,6 @@ buildNumber.properties
 
 # OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
 # Application specific
@@ -56,5 +51,6 @@ tools/
 *.ps1
 *.cmd
 
-# Test files
-test-*.html
+# Local Maven repository
+src/.m2/
+src/lib/
