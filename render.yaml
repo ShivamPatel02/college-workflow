@@ -1,0 +1,11 @@
+# Render configuration
+services:
+  - type: web
+    name: college-workflow
+    env: java
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/workflow-0.0.1.jar"
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+    plan: free
